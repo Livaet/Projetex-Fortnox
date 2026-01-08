@@ -3,11 +3,31 @@
   "version": "1.0.0",
   "description": "Connector to bill Projetex projects in Fortnox",
   "main": "dist/index.js",
+  "bin": {
+    "projetex-fortnox": "./dist/cli.js"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
-    "bill": "ts-node src/cli.ts"
+    "bill": "ts-node src/cli.ts",
+    "build:exe": "npm run build && pkg . --compress GZip",
+    "build:win": "npm run build && pkg . --targets node18-win-x64 --compress GZip --output ./build/projetex-fortnox-win.exe",
+    "build:linux": "npm run build && pkg . --targets node18-linux-x64 --compress GZip --output ./build/projetex-fortnox-linux",
+    "build:macos": "npm run build && pkg . --targets node18-macos-x64 --compress GZip --output ./build/projetex-fortnox-macos",
+    "build:all": "npm run build && pkg . --targets node18-win-x64,node18-linux-x64,node18-macos-x64 --compress GZip --out-path ./build"
+  },
+  "pkg": {
+    "scripts": "dist/**/*.js",
+    "assets": [
+      ".env.example"
+    ],
+    "targets": [
+      "node18-win-x64",
+      "node18-linux-x64",
+      "node18-macos-x64"
+    ],
+    "outputPath": "build"
   },
   "keywords": ["projetex", "fortnox", "billing", "connector"],
   "author": "",
@@ -20,6 +40,7 @@
   "devDependencies": {
     "@types/node": "^20.10.5",
     "typescript": "^5.3.3",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "pkg": "^5.8.1"
   }
 }

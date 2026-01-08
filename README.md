@@ -14,12 +14,32 @@ A TypeScript-based connector that automates billing of Projetex translation proj
 
 ## Prerequisites
 
-- Node.js 18+ and npm
+- **For Standalone Executable**: No Node.js required! See [DEPLOYMENT.md](DEPLOYMENT.md)
+- **For Development**: Node.js 18+ and npm
 - Projetex account with API access
 - Fortnox account with API credentials
 - API keys and access tokens for both systems
 
 ## Installation
+
+### Option 1: Standalone Executable (Recommended for Production)
+
+**If you cannot install Node.js on your machine**, use the standalone executable:
+
+1. Build on a machine with Node.js:
+   ```bash
+   git clone <repository-url>
+   cd Projetex-Fortnox
+   ./build-executable.sh
+   ```
+
+2. Transfer the executable and `.env` file to your target machine
+
+3. Configure and run (no Node.js needed!)
+
+📖 **See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions**
+
+### Option 2: Development Installation (Requires Node.js)
 
 1. Clone the repository:
 ```bash
