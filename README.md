@@ -1,24 +1,27 @@
 # Projetex-Fortnox Billing Connector
 
-A TypeScript-based connector that automates billing of Projetex translation projects in Fortnox accounting system.
+A TypeScript-based connector that automates billing of Projetex 3D translation projects in Fortnox accounting system using direct database access.
 
 ## Features
 
-- ✅ Fetch project and job details from Projetex API
+- ✅ Connect directly to Projetex 3D database via ODBC/SQL Server
+- ✅ Fetch project and job details from Projetex database
 - ✅ Automatically match Projetex clients with Fortnox customers
 - ✅ Create consolidated invoices in Fortnox for all jobs in a project
 - ✅ Support for multiple jobs per invoice
 - ✅ Preview billing before creating invoices
 - ✅ Comprehensive error handling and validation
 - ✅ CLI interface for easy usage
+- ✅ Standalone executable (no Node.js required on target machine)
 
 ## Prerequisites
 
 - **For Standalone Executable**: No Node.js required! See [DEPLOYMENT.md](DEPLOYMENT.md)
 - **For Development**: Node.js 18+ and npm
-- Projetex account with API access
+- Projetex 3D with ODBC/SQL Server database access
+- Database credentials (server, port, database name, username, password)
 - Fortnox account with API credentials
-- API keys and access tokens for both systems
+- API access tokens for Fortnox
 
 ## Installation
 
@@ -59,16 +62,21 @@ cp .env.example .env
 
 4. Edit `.env` file with your credentials:
 ```env
-# Projetex API Configuration
-PROJETEX_API_URL=https://your-company.projetex.com/api
-PROJETEX_API_KEY=your-projetex-api-key
-PROJETEX_USERNAME=your-username
+# Projetex 3D Database Configuration
+PROJETEX_DB_SERVER=192.0.0.1\P3D
+PROJETEX_DB_PORT=212
+PROJETEX_DB_DATABASE=Projetex3D
+PROJETEX_DB_USER=ODBC
+PROJETEX_DB_PASSWORD=ODBC
+PROJETEX_DB_TRUST_CERT=true
 
 # Fortnox API Configuration
 FORTNOX_API_URL=https://api.fortnox.se/3
 FORTNOX_ACCESS_TOKEN=your-fortnox-access-token
 FORTNOX_CLIENT_SECRET=your-fortnox-client-secret
 ```
+
+📋 **Note**: Adjust the database settings to match your Projetex 3D installation. See [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md) for table/column customization.
 
 5. Build the project:
 ```bash

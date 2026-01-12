@@ -4,9 +4,12 @@ dotenv.config();
 
 export interface Config {
   projetex: {
-    apiUrl: string;
-    apiKey: string;
-    username: string;
+    server: string;
+    port: number;
+    database: string;
+    user: string;
+    password: string;
+    trustServerCertificate: boolean;
   };
   fortnox: {
     apiUrl: string;
@@ -17,9 +20,11 @@ export interface Config {
 
 export function loadConfig(): Config {
   const requiredEnvVars = [
-    'PROJETEX_API_URL',
-    'PROJETEX_API_KEY',
-    'PROJETEX_USERNAME',
+    'PROJETEX_DB_SERVER',
+    'PROJETEX_DB_PORT',
+    'PROJETEX_DB_DATABASE',
+    'PROJETEX_DB_USER',
+    'PROJETEX_DB_PASSWORD',
     'FORTNOX_API_URL',
     'FORTNOX_ACCESS_TOKEN',
     'FORTNOX_CLIENT_SECRET'
@@ -33,9 +38,12 @@ export function loadConfig(): Config {
 
   return {
     projetex: {
-      apiUrl: process.env.PROJETEX_API_URL!,
-      apiKey: process.env.PROJETEX_API_KEY!,
-      username: process.env.PROJETEX_USERNAME!,
+      server: process.env.PROJETEX_DB_SERVER!,
+      port: parseInt(process.env.PROJETEX_DB_PORT!, 10),
+      database: process.env.PROJETEX_DB_DATABASE!,
+      user: process.env.PROJETEX_DB_USER!,
+      password: process.env.PROJETEX_DB_PASSWORD!,
+      trustServerCertificate: process.env.PROJETEX_DB_TRUST_CERT === 'true' || true,
     },
     fortnox: {
       apiUrl: process.env.FORTNOX_API_URL!,
