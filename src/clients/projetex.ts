@@ -118,7 +118,7 @@ export class ProjetexClient {
           j.CJOB_NAME as jobName,
           j.CJOB_INSTRUCTION as description,
           j.CJOB_VOLUME as quantity,
-          j.CJOB_RATE as pricePerUnit,
+          j.CJOB_PRICE as pricePerUnit,
           j.CJOB_TOTAL as totalAmount,
           j.CJOB_ISCOMPLETED as isCompleted,
           j.CJOB_COMPLETED as completedDate,
