@@ -55,20 +55,19 @@ export class ProjetexClient {
     try {
       const pool = await this.getPool();
 
-      // Query project information
-      // Note: Table and column names may need adjustment based on your Projetex schema
+      // Query project information using actual Projetex 3D schema
       const projectQuery = `
         SELECT
-          p.idProject as projectId,
-          p.ProjectNo as projectNumber,
-          p.ProjectName as projectName,
-          p.idClient as clientId,
-          c.ClientName as clientName,
-          c.ClientCode as clientCode,
-          p.Status as status
+          p.PROJ_ID as projectId,
+          p.PROJ_NUMB as projectNumber,
+          p.PROJ_NAME as projectName,
+          p.CLIENT_ID as clientId,
+          c.CLIENT_NAME as clientName,
+          c.CLIENT_CODE as clientCode,
+          p.PROJ_IS_COMPLETED as status
         FROM Projects p
-        LEFT JOIN Clients c ON p.idClient = c.idClient
-        WHERE p.ProjectNo = @projectNumber
+        LEFT JOIN Clients c ON p.CLIENT_ID = c.CLIENT_ID
+        WHERE p.PROJ_NUMB = @projectNumber
       `;
 
       const projectResult = await pool.request()
@@ -111,25 +110,24 @@ export class ProjetexClient {
     try {
       const pool = await this.getPool();
 
-      // Query jobs/tasks for the project
-      // Note: Table and column names may need adjustment based on your Projetex schema
+      // Query jobs/tasks for the project using actual Projetex 3D schema
       const jobsQuery = `
         SELECT
-          j.idJob as jobId,
-          j.JobNo as jobNumber,
-          j.JobName as jobName,
-          j.Description as description,
-          j.SourceLanguage as sourceLanguage,
-          j.TargetLanguage as targetLanguage,
-          j.Quantity as quantity,
-          j.Unit as unit,
-          j.PricePerUnit as pricePerUnit,
-          j.TotalAmount as totalAmount,
-          j.Status as status,
-          j.CompletedDate as completedDate
-        FROM Jobs j
-        WHERE j.idProject = @projectId
-        ORDER BY j.JobNo
+          j.CJOB_ID as jobId,
+          j.CJOB_NUMB as jobNumber,
+          j.CJOB_NAME as jobName,
+          j.CJOB_INSTRUCTION as description,
+          j.CJOB_VOLUME as quantity,
+          j.CJOB_RATE as pricePerUnit,
+          j.CJOB_TOTAL as totalAmount,
+          j.CJOB_ISCOMPLETED as isCompleted,
+          j.CJOB_COMPLETED as completedDate,
+          '' as sourceLanguage,
+          '' as targetLanguage,
+          'units' as unit
+        FROM CJOBS j
+        WHERE j.PROJ_ID = @projectId
+        ORDER BY j.CJOB_NUMB
       `;
 
       const jobsResult = await pool.request()
@@ -138,16 +136,16 @@ export class ProjetexClient {
 
       return jobsResult.recordset.map(row => ({
         jobId: row.jobId,
-        jobNumber: row.jobNumber || '',
+        jobNumber: row.jobNumber ? row.jobNumber.toString() : '',
         jobName: row.jobName || '',
         description: row.description || '',
         sourceLanguage: row.sourceLanguage || '',
         targetLanguage: row.targetLanguage || '',
         quantity: parseFloat(row.quantity) || 0,
-        unit: row.unit || 'pcs',
+        unit: row.unit || 'units',
         pricePerUnit: parseFloat(row.pricePerUnit) || 0,
         totalAmount: parseFloat(row.totalAmount) || 0,
-        status: row.status || '',
+        status: row.isCompleted ? 'completed' : 'in progress',
         completedDate: row.completedDate ? row.completedDate.toISOString() : undefined,
       }));
     } catch (error) {
